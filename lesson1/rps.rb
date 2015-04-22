@@ -61,5 +61,4 @@ loop do
   if play_again != 'y'
     break
   end
-
 end

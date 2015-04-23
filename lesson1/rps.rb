@@ -31,8 +31,9 @@ loop do
 
   computer_choice = GAME.keys.sample
 
-  if player_choice == 'p' && computer_choice == 'r' || player_choice == 'r' && computer_choice == 's' || 
-    player_choice == 's' && computer_choice == 'p'
+  if player_choice == 'p' && computer_choice == 'r' || 
+     player_choice == 'r' && computer_choice == 's' || 
+     player_choice == 's' && computer_choice == 'p'
     winning_message(player_choice)
     puts "You win!"
     player_score += 1

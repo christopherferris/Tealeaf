@@ -26,7 +26,7 @@ end
 
 def draw_board(b)
   system 'clear'
-	puts " #{b[1]} | #{b[2]} | #{b[3]}"
+  puts " #{b[1]} | #{b[2]} | #{b[3]}"
   puts "-----------"
   puts " #{b[4]} | #{b[5]} | #{b[6]}"
   puts "-----------"
@@ -34,19 +34,19 @@ def draw_board(b)
 end
 
 def empty_positions(b)
-  b.select {|k,v| v == ' '}.keys
+  b.select {|_,v| v == ' '}.keys
 end
 
 def player_picks_square(b)
   begin
-  puts "Pick a square (1-9)"
-  puts "Pick: #{empty_positions(b)}"
-  position = gets.chomp.to_i
+    puts "Pick a square (1-9)"
+    puts "Pick: #{empty_positions(b)}"
+    position = gets.chomp.to_i
   if b[position] == ' '
     b[position] = 'X'
-    authenticate = 'true'
+    authenticate = true
   end
-end until authenticate
+  end until authenticate
 end
 
 def computer_picks_square(b)
@@ -55,7 +55,6 @@ def computer_picks_square(b)
 end
 
 def check_winner(b)
-  winning_lines = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
   if b[1] == 'X' && b[2] == 'X' && b[3] == 'X' || b[4] == 'X' && b[5] == 'X' && b[6] == 'X' ||
      b[7] == 'X' && b[8] == 'X' && b[9] == 'X' || b[1] == 'X' && b[4] == 'X' && b[7] == 'X' ||
      b[2] == 'X' && b[5] == 'X' && b[8] == 'X' || b[3] == 'X' && b[6] == 'X' && b[9] == 'X' ||
@@ -74,10 +73,12 @@ board = initialize_board
 draw_board(board)
 
 begin
-player_picks_square(board)
-computer_picks_square(board)
-draw_board(board)
-winner = check_winner(board)
+  player_picks_square(board)
+  if check_winner(board) != 'Player'
+  computer_picks_square(board)
+  end
+  draw_board(board)
+  winner = check_winner(board)
 end until winner || empty_positions(board).empty?
 
 if winner

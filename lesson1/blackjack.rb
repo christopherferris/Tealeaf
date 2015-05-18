@@ -18,6 +18,11 @@ def calculate_total(cards)
   total
 end
 
+def display_hand(hand, owner)
+  puts "#{owner} hand:"
+  hand.each { |card| puts "=> #{card}" }
+end
+
 puts "What is your name?"
 name = gets.chomp
 puts "Hi #{name}, welcome to Major Blackjack!"
@@ -31,10 +36,10 @@ deck.shuffle!
 player_hand = []
 dealer_hand = []
 
-player_hand << deck.pop
-dealer_hand << deck.pop
-player_hand << deck.pop
-dealer_hand << deck.pop
+2.times do 
+  player_hand << deck.pop
+  dealer_hand << deck.pop
+end
 
 # Calculate total
 dealer_total = calculate_total(dealer_hand)
@@ -66,23 +71,24 @@ while player_total <= 21
   puts "What would you like to do? H) hit S) stand"
   choice = gets.chomp.downcase
   new_card = deck.pop
-  if !['h', 's'].include?(choice)
+  unless ['h', 's'].include?(choice)
     puts "Error, you must choose H or S"
     next
   end
-  # Hit
-  if choice == "h"
+
+  if choice == "h" # Hit
     player_hand << new_card
     player_total = calculate_total(player_hand)
   end
-  # Stay
-  if choice == "s"
+
+  if choice == "s" # Stay
     puts "You chose to stay"
     break
   end
   puts "Player has: #{player_hand} for a total of #{player_total}"
   puts "Dealer has: #{dealer_hand[0]} showing"
 end
+
 if player_total > 21
   puts "Player busted. Dealer Wins!"
   exit
@@ -93,6 +99,7 @@ puts "Dealer has: #{dealer_hand} for a total of #{dealer_total}"
 if dealer_total == 21
   puts "Sorry, Dealer has Blackjack."
 end
+
 while dealer_total < 17
   sleep(2)
   new_card = deck.pop
@@ -101,21 +108,14 @@ while dealer_total < 17
   puts "Dealer has: #{dealer_hand} for a total of #{dealer_total}"
   sleep(2)
 end
+
 if dealer_total > 21
   puts "Dealer busted. You win!"
   exit
 end
 
-# Compare hands
-puts "Dealer hand:"
-dealer_hand.each do |card|
-  puts "=> #{card}"
-end
-
-puts "Player hand:"
-player_hand.each do |card|
-  puts "=> #{card}"
-end
+display_hand(dealer_hand, "Dealer")
+display_hand(player_hand, "Player")
 
 if player_total > dealer_total
   puts "Player wins!"

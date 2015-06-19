@@ -2,8 +2,8 @@ class Hand
   include Comparable
   attr_reader :value
 
-  def initialize(v)
-    @value = v
+  def initialize(value)
+    @value = value
   end
 
   def rock?
@@ -42,8 +42,8 @@ end
 class Player
   attr_accessor :hand, :name
 
-  def initialize(n)
-    @name = n
+  def initialize(name)
+    @name = name
   end
 end
 

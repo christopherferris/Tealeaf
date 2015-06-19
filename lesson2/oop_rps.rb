@@ -1,24 +1,37 @@
 class Hand
   include Comparable
-  attr_accessor :value
+  attr_reader :value
 
   def initialize(v)
     @value = v
   end
 
-  def <=> (another_hand)
-    if @value == another_hand.value
+  def rock?
+    value == 'r'
+  end
+
+  def paper?
+    value == 'p'
+  end
+
+  def scissors?
+    value == 's'
+  end
+
+  def <=>(another_hand)
+    if value == another_hand.value
       0
-    elsif (@value == 'r' && another_hand.value == 's') || (@value == 'p' && another_hand.value == 'r') ||
-       (@value == 's' && another_hand.value == 'p')
+    elsif rock? && another_hand.scissors? || 
+          paper? && another_hand.rock?    ||
+          scissors? && another_hand.paper?
       1
     else
-     -1
+      -1
     end
   end
 
   def display_winning_message
-    case @value
+    case value
     when 'r' then puts "Rock smashes Scissors"
     when 'p' then puts "Paper wraps Rock"
     when 's' then puts "Scissors cuts Paper"
@@ -39,9 +52,9 @@ class Human < Player
   def pick_hand
     begin
       puts "Pick one: R, P, or S"
-      c = gets.chomp.downcase
-    end until Game::CHOICES.keys.include?(c)
-    self.hand = Hand.new(c)
+      pick = gets.chomp.downcase
+    end until Game::CHOICES.keys.include?(pick)
+    self.hand = Hand.new(pick)
   end
 end
 
@@ -68,9 +81,7 @@ class Game
       computer.pick_hand
       compare_hands
       play_again
-      if self.answer == 'n'
-        break
-      end
+      break if answer == 'n'
     end
   end
 
